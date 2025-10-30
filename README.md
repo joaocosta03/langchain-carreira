@@ -99,7 +99,7 @@ python main.py "Cientista de Dados" "Machine Learning"
 ```
 ======================================================================
 AGENTE CONSULTOR DE CARREIRA EM TI
-Motor: Gemini 1.5 Pro | Tools: SerpAPI + Web Scraping
+Motor: Gemini Flash Lite | Tools: SerpAPI + Web Scraping
 ======================================================================
 
 📋 Área: Engenheiro de DevOps
@@ -221,10 +221,10 @@ Motor: Gemini 1.5 Pro | Tools: SerpAPI + Web Scraping
 - Skills curadas internamente por tecnologia
 - Retorna `{"error": {...}}` se nenhum provedor responder
 
-### 3. LLM: Gemini 1.5 Pro (via LangChain ReAct)
+### 3. LLM: Gemini Flash Lite (via LangChain ReAct)
 
 **Configuração**:
-- Modelo: `gemini-1.5-pro` (configurável por `GEMINI_MODEL_NAME` no .env)
+- Modelo: `gemini-flash-lite-latest` (configurável por `GEMINI_MODEL_NAME` no .env)
 - Framework: LangChain Agents (ReAct)
 - Tools: `analisar_demanda_salarial` e `sugerir_certificacoes_tendencia`
 
