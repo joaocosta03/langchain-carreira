@@ -1,0 +1,188 @@
+================================================================================
+  AGENTE CONSULTOR DE CARREIRA EM TI - IMPLEMENTACAO COMPLETA
+================================================================================
+
+SISTEMA PRONTO PARA USO!
+
+Este projeto implementa um agente inteligente baseado em Gemini 1.5 Pro que
+fornece planos de carreira personalizados usando DADOS REAIS de:
+  - Google Jobs (via SerpAPI)
+  - Certificacoes oficiais (AWS, Microsoft, Google Cloud)
+
+================================================================================
+  INICIO RAPIDO (5 MINUTOS)
+================================================================================
+
+1. CRIAR AMBIENTE VIRTUAL
+   
+   Windows:
+   --------
+   python -m venv .venv
+   .venv\Scripts\activate
+   
+   Linux/Mac:
+   ----------
+   python -m venv .venv
+   source .venv/bin/activate
+
+
+2. INSTALAR DEPENDENCIAS
+   
+   pip install -r requirements.txt
+
+
+3. OBTER CHAVES DE API (GRATIS)
+   
+   a) Google AI (Gemini):
+      - Acesse: https://aistudio.google.com/app/apikey
+      - Faca login com conta Google
+      - Clique "Get API Key"
+      - Copie a chave
+   
+   b) SerpAPI:
+      - Acesse: https://serpapi.com/users/sign_up
+      - Crie conta gratuita (100 buscas/mes)
+      - Va em: https://serpapi.com/manage-api-key
+      - Copie a chave
+
+
+4. CONFIGURAR ARQUIVO .env
+   
+   Edite o arquivo .env (ja criado) e adicione suas chaves:
+   
+   GOOGLE_API_KEY=AIzaSy...sua_chave_aqui
+   SERPAPI_API_KEY=abc123...sua_chave_aqui
+
+
+5. EXECUTAR
+   
+   python main.py
+   
+   O sistema vai pedir:
+   - Area de TI (ex: "Engenheiro de DevOps")
+   - Tecnologia (ex: "Nuvem")
+
+================================================================================
+  EXEMPLO DE USO
+================================================================================
+
+> python main.py
+
+Area de TI (default: Engenheiro de DevOps): Cientista de Dados
+Tecnologia foco (default: Nuvem): Machine Learning
+
+[Sistema busca dados reais...]
+
+PLANO DE ACAO FINAL:
+1. Mercado com X vagas ativas... (fonte: Google Jobs via SerpAPI)
+2. Priorize certificacao Y... (fonte: Paginas oficiais AWS/Microsoft/GCP)
+3. Invista em skill Z... (fonte: Paginas oficiais)
+4. Faixa salarial: R$ ... (fonte: Google Jobs via SerpAPI)
+5. Acao imediata: ... (fonte: integracao das analises)
+
+================================================================================
+  TESTAR FERRAMENTAS
+================================================================================
+
+Para validar que as tools estao funcionando:
+
+python test_tools.py
+
+================================================================================
+  ESTRUTURA DO PROJETO
+================================================================================
+
+main.py                      # Entrypoint (comece aqui)
+llm_gemini.py                # Motor Gemini + Function Calling
+schema.py                    # Validacao de dados (Pydantic)
+
+tools/
+  demanda_salarios.py        # Tool 1: SerpAPI (Google Jobs)
+  certs_cloud.py             # Tool 2: Scraping (certificacoes)
+
+setup.py                     # Script de configuracao
+test_tools.py                # Testes das tools
+
+README.md                    # Documentacao completa
+ARCHITECTURE.md              # Arquitetura e design
+QUICK_START.md               # Guia detalhado
+SUMMARY.md                   # Sumario da implementacao
+
+================================================================================
+  DOCUMENTACAO
+================================================================================
+
+LEIA NESTA ORDEM:
+
+1. LEIA_PRIMEIRO.txt    (este arquivo - visao geral)
+2. QUICK_START.md       (guia passo-a-passo)
+3. README.md            (documentacao completa)
+4. ARCHITECTURE.md      (decisoes tecnicas)
+5. SUMMARY.md           (checklist de implementacao)
+
+================================================================================
+  TROUBLESHOOTING
+================================================================================
+
+PROBLEMA: "GOOGLE_API_KEY nao configurada"
+SOLUCAO: Edite .env e adicione sua chave do Google AI Studio
+
+PROBLEMA: "ModuleNotFoundError: No module named 'google'"
+SOLUCAO: Ative o ambiente virtual e execute: pip install -r requirements.txt
+
+PROBLEMA: "Rate limit exceeded"
+SOLUCAO: Plano gratuito SerpAPI tem 100 calls/mes. Aguarde reset ou upgrade.
+
+PROBLEMA: Tool de certificacoes retorna poucos dados
+SOLUCAO: Normal. Sistema usa fallbacks para certificacoes core.
+
+================================================================================
+  CARACTERISTICAS PRINCIPAIS
+================================================================================
+
+[x] 2 tools reais (SEM simulacoes)
+[x] Function calling do Gemini (loop completo)
+[x] Plano em 5 pontos com fontes citadas
+[x] Tratamento de erros gracioso
+[x] Logs de execucao detalhados
+[x] Contratos estaveis ({"data": ...} ou {"error": ...})
+[x] Arquitetura minima (sem overengineering)
+[x] Pronto para escalar (facil adicionar tools)
+
+================================================================================
+  PROXIMOS PASSOS (APOS FUNCIONAR)
+================================================================================
+
+1. Explore o codigo:
+   - Comece por main.py
+   - Veja llm_gemini.py (function calling)
+   - Analise tools/ (integracao com APIs)
+
+2. Customize:
+   - Adicione novas fontes de dados
+   - Melhore parsing de salarios
+   - Implemente cache
+
+3. Evolua:
+   - API REST (FastAPI)
+   - Interface web
+   - Mais certificacoes/skills
+
+================================================================================
+  SUPORTE
+================================================================================
+
+Toda a documentacao esta nos arquivos .md
+Codigo bem comentado e organizado
+Contratos estabilizados para facil manutencao
+
+================================================================================
+
+SISTEMA COMPLETO E FUNCIONAL!
+
+Basta configurar .env e executar: python main.py
+
+Boa sorte com seu agente de carreira! :)
+
+================================================================================
+
