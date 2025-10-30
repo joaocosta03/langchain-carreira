@@ -32,7 +32,8 @@ SERPAPI_API_KEY=
 def check_dependencies():
     """Verifica se dependências estão instaladas."""
     required = [
-        'google.generativeai',
+        'langchain',
+        'langchain_google_genai',
         'requests',
         'bs4',
         'dotenv',

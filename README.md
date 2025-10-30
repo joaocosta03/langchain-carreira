@@ -16,7 +16,7 @@ Implementar um agente que:
 ```
 agente_carreira/
 ├── main.py                      # Entrypoint: CLI e orquestração
-├── llm_gemini.py                # Wrapper Gemini com function calling
+├── agent_langchain.py           # Agente LangChain (ReAct) com Gemini
 ├── schema.py                    # Modelos Pydantic para validação
 ├── tools/
 │   ├── __init__.py
@@ -221,12 +221,12 @@ Motor: Gemini 1.5 Pro | Tools: SerpAPI + Web Scraping
 - Skills curadas internamente por tecnologia
 - Retorna `{"error": {...}}` se nenhum provedor responder
 
-### 3. LLM: Gemini 1.5 Pro (Function Calling)
+### 3. LLM: Gemini 1.5 Pro (via LangChain ReAct)
 
 **Configuração**:
-- Modelo: `gemini-1.5-pro`
-- System instruction: Persona de consultor sênior de carreira
-- Tools: 2 function declarations (tools acima)
+- Modelo: `gemini-1.5-pro` (configurável por `GEMINI_MODEL_NAME` no .env)
+- Framework: LangChain Agents (ReAct)
+- Tools: `analisar_demanda_salarial` e `sugerir_certificacoes_tendencia`
 
 **Regras do agente**:
 1. SEMPRE chamar as duas ferramentas antes da resposta final
@@ -235,19 +235,18 @@ Motor: Gemini 1.5 Pro | Tools: SerpAPI + Web Scraping
 4. Resposta final em **5 bullets** objetivos
 5. Cada bullet cita explicitamente `"fonte: ..."`
 
-**Loop de execução**:
+**Loop de execução** (ReAct):
 1. Recebe pergunta do usuário
-2. Thought: analisa o que precisa
-3. Action: chama `analisar_demanda_salarial`
-4. Observation: processa resultado
-5. Action: chama `sugerir_certificacoes_tendencia`
-6. Observation: processa resultado
-7. Responde com plano integrado em 5 pontos
+2. Raciocina e decide qual tool chamar
+3. Chama `analisar_demanda_salarial` e integra observações
+4. Chama `sugerir_certificacoes_tendencia` e integra observações
+5. Responde com plano integrado em 5 pontos
 
 ## 📦 Dependências
 
 ```
-google-generativeai==0.7.2   # Gemini API
+langchain
+langchain-google-genai       # Provider Gemini para LangChain
 requests==2.32.3             # HTTP client
 beautifulsoup4==4.12.3       # HTML parsing
 python-dotenv==1.0.1         # Variáveis de ambiente

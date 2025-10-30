@@ -7,7 +7,7 @@
 ```
 langchain-carreira/
 ├── main.py                      # ✅ Entrypoint + CLI
-├── llm_gemini.py                # ✅ Wrapper Gemini + Function Calling
+├── agent_langchain.py           # ✅ Agente LangChain (ReAct + Gemini)
 ├── schema.py                    # ✅ Modelos Pydantic
 ├── tools/
 │   ├── __init__.py              # ✅ Package marker
@@ -29,12 +29,11 @@ langchain-carreira/
 
 ## 🎯 Funcionalidades Implementadas
 
-### 1. Motor LLM (llm_gemini.py)
-- ✅ Configuração do Gemini 1.5 Pro
-- ✅ Function calling com loop completo
-- ✅ System instruction com persona de consultor
-- ✅ Declarações de funções (FUNCTION_DECLARATIONS)
-- ✅ Logs de execução (nome, args, resultado)
+### 1. Agente (agent_langchain.py)
+- ✅ LangChain Agents (ReAct) com Gemini
+- ✅ Prompt ReAct + persona de consultor
+- ✅ Tools conectadas via LangChain `Tool`
+- ✅ Logs de execução (verbose do AgentExecutor)
 - ✅ Tratamento de erros gracioso
 
 ### 2. Tool 1: Análise de Demanda Salarial (demanda_salarios.py)
@@ -215,7 +214,7 @@ python test_tools.py
 - ✅ Tool 2: Scraping de AWS/Microsoft/Google Cloud
 - ✅ Retorna plano em 5 pontos
 - ✅ Cada ponto cita explicitamente "fonte: ..."
-- ✅ Usa function calling do Gemini
+- ✅ Usa LangChain Agents (ReAct) com Gemini
 
 ### Requisitos Não-Funcionais
 - ✅ Erros não quebram o fluxo (retornam {"error": ...})

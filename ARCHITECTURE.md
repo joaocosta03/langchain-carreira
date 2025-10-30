@@ -1,8 +1,8 @@
-# 🏗️ Arquitetura - Agente Consultor de Carreira
+#  Arquitetura - Agente Consultor de Carreira
 
 ## Visão Geral
 
-Sistema de agente inteligente baseado em **function calling** do Gemini, com arquitetura **flat** e **contratos estáveis**.
+Sistema de agente inteligente baseado em **LangChain (ReAct) com Gemini**, com arquitetura **flat** e **contratos estáveis**.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -14,8 +14,7 @@ Sistema de agente inteligente baseado em **function calling** do Gemini, com arq
                     └──────┬──────┘
                            │
               ┌────────────▼────────────┐
-              │    llm_gemini.py        │  ◄── Gemini Wrapper
-              │  (Function Calling)     │
+              │  agent_langchain.py     │  ◄── Agente LangChain (ReAct)
               └────────────┬────────────┘
                            │
         ┌──────────────────┼──────────────────┐
@@ -40,8 +39,8 @@ Sistema de agente inteligente baseado em **function calling** do Gemini, com arq
 **Fluxo**:
 1. Recebe parâmetros (área, tecnologia)
 2. Cria `tool_router` (dict: nome → função)
-3. Inicializa agente Gemini
-4. Executa turno completo (loop de function calling)
+3. Inicializa agente LangChain (ReAct + Gemini)
+4. Executa turno completo (AgentExecutor.invoke)
 5. Valida formato da resposta (5 bullets)
 6. Exibe resultado
 
@@ -52,29 +51,25 @@ Sistema de agente inteligente baseado em **function calling** do Gemini, com arq
 
 ---
 
-### 2. `llm_gemini.py` - Motor LLM
+### 2. `agent_langchain.py` - Agente LangChain (ReAct)
 
-**Responsabilidade**: Abstração do Gemini + Function Calling
+**Responsabilidade**: Orquestração ReAct com Gemini via LangChain
 
-**Classes/Funções**:
-- `GeminiAgent`: Gerencia chat e loop de function calling
-- `make_model()`: Factory para criar agente configurado
-- `FUNCTION_DECLARATIONS`: Esquemas das tools para o Gemini
-- `SYSTEM_INSTRUCTION`: Persona e regras do agente
+**Principais elementos**:
+- `make_agent()`: Cria `AgentExecutor` com `ChatGoogleGenerativeAI`
+- Prompt ReAct com instruções do sistema e ferramentas
+- Tools (LangChain `Tool`) conectadas ao `tool_router`
 
-**Loop de execução**:
-```python
-while has_function_calls:
-    1. Gemini retorna function_call(s)
-    2. Executa tool via tool_router
-    3. Envia function_response de volta
-    4. Repete até Gemini retornar texto final
-```
+**Execução**:
+1. Recebe input do usuário
+2. Decide e chama tools via ReAct
+3. Integra observações das tools
+4. Gera resposta final em 5 bullets
 
 **Pontos de extensão**:
-- Suportar outros modelos (OpenAI, Anthropic)
-- Adicionar streaming de respostas
-- Implementar cache de conversas
+- Suportar outros modelos (OpenAI, Anthropic) trocando o provider LangChain
+- Adicionar streaming (callbacks LangChain)
+- Implementar cache
 
 ---
 
@@ -238,25 +233,7 @@ def nova_funcionalidade(param: str) -> Dict[str, Any]:
         }
 ```
 
-2. **Adicionar declaração em `llm_gemini.py`**:
-```python
-FUNCTION_DECLARATIONS.append({
-    "name": "nova_funcionalidade",
-    "description": "Use quando o usuário perguntar sobre X...",
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "param": {
-                "type": "string",
-                "description": "Descrição do parâmetro"
-            }
-        },
-        "required": ["param"]
-    }
-})
-```
-
-3. **Registrar no router em `main.py`**:
+2. **Registrar no router em `main.py`**:
 ```python
 tool_router = {
     "analisar_demanda_salarial": demanda_salarios.analisar_demanda_salarial,
@@ -265,7 +242,7 @@ tool_router = {
 }
 ```
 
-4. **Atualizar `SYSTEM_INSTRUCTION`** (se necessário):
+3. **Atualizar `SYSTEM_INSTRUCTION`** (se necessário):
 ```python
 SYSTEM_INSTRUCTION = """...
 Sempre chame as três ferramentas disponíveis...
@@ -279,17 +256,16 @@ Sempre chame as três ferramentas disponíveis...
 ### Por que function calling?
 
 **Alternativas consideradas**:
-- ReAct puro (parsing de texto)
-- LangChain Agents
+- Function Calling nativo
 - LlamaIndex Agents
 
-**Escolha**: Function calling nativo do Gemini
+**Escolha**: LangChain Agents (ReAct)
 
 **Motivos**:
-1. ✅ Contratos estruturados (JSON)
-2. ✅ Menos parsing manual
-3. ✅ Melhor performance (menos tokens)
-4. ✅ Suporte oficial do SDK
+1. ✅ Ecossistema maduro de tools, callbacks e chains
+2. ✅ Facilidade de troca de provedores LLM
+3. ✅ Padrão ReAct bem suportado
+4. ✅ Integração nativa com Gemini via `langchain-google-genai`
 
 ---
 

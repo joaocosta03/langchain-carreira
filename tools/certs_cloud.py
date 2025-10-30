@@ -167,8 +167,6 @@ def sugerir_certificacoes_tendencia(tecnologia: str = "Nuvem") -> Dict[str, Any]
     Returns:
         dict: {"data": {...}} ou {"error": {...}}
     """
-    print(f"[TOOL] sugerir_certificacoes_tendencia: tecnologia={tecnologia}")
-    
     # URLs das páginas oficiais
     urls = {
         "aws": "https://aws.amazon.com/certification/",
@@ -219,8 +217,6 @@ def sugerir_certificacoes_tendencia(tecnologia: str = "Nuvem") -> Dict[str, Any]
     
     # Skills em alta (curadoria interna)
     skills = SKILLS_MAP.get(tecnologia, SKILLS_MAP["Nuvem"])
-    
-    print(f"[TOOL] Resultado: {len(todas_certs)} certificações coletadas")
     
     return {
         "data": {

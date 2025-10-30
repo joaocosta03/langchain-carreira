@@ -294,7 +294,7 @@ python main.py "Arquiteto de Software" "Microsserviços"
 
 Depois de rodar com sucesso:
 
-1. **Explore o código**: Comece por `main.py` → `llm_gemini.py` → `tools/`
+1. **Explore o código**: Comece por `main.py` → `agent_langchain.py` → `tools/`
 
 2. **Leia a arquitetura**: Veja `ARCHITECTURE.md` para entender decisões de design
 
@@ -317,7 +317,7 @@ Depois de rodar com sucesso:
 Após seguir este guia, você deve ter:
 
 - [x] Ambiente virtual criado e ativado
-- [x] Dependências instaladas (`pip list` mostra google-generativeai, requests, etc)
+- [x] Dependências instaladas (`pip list` mostra langchain, langchain-google-genai, requests, etc)
 - [x] Arquivo `.env` com chaves válidas
 - [x] `python test_tools.py` passa sem erros
 - [x] `python main.py` retorna plano de 5 pontos com fontes citadas

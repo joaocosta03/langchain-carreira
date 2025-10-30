@@ -89,7 +89,6 @@ def analisar_demanda_salarial(area: str, local: str = "Brasil") -> Dict[str, Any
             "api_key": api_key
         }
         
-        print(f"[TOOL] analisar_demanda_salarial: area={area}, local={local}")
         response = requests.get(url, params=params, timeout=30)
         response.raise_for_status()
         
@@ -170,8 +169,6 @@ def analisar_demanda_salarial(area: str, local: str = "Brasil") -> Dict[str, Any
             observacoes.append("Amostra pequena, percentis podem não ser representativos")
         
         observacoes_texto = "; ".join(observacoes) if observacoes else "Dados coletados com sucesso"
-        
-        print(f"[TOOL] Resultado: {amostra_total} vagas, {vagas_com_salario} com salário")
         
         return {
             "data": {

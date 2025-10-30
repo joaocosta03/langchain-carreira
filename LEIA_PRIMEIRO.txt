@@ -93,7 +93,7 @@ python test_tools.py
 ================================================================================
 
 main.py                      # Entrypoint (comece aqui)
-llm_gemini.py                # Motor Gemini + Function Calling
+agent_langchain.py           # Agente LangChain (ReAct + Gemini)
 schema.py                    # Validacao de dados (Pydantic)
 
 tools/
@@ -155,7 +155,7 @@ SOLUCAO: Normal. Sistema usa fallbacks para certificacoes core.
 
 1. Explore o codigo:
    - Comece por main.py
-   - Veja llm_gemini.py (function calling)
+   - Veja agent_langchain.py (ReAct com LangChain)
    - Analise tools/ (integracao com APIs)
 
 2. Customize:

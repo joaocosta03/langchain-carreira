@@ -6,7 +6,7 @@ CLI simples que orquestra o agente Gemini com as duas tools reais.
 import sys
 from tools.demanda_salarios import analisar_demanda_salarial
 from tools.certs_cloud import sugerir_certificacoes_tendencia
-import llm_gemini
+import agent_langchain
 
 
 def validar_formato_resposta(resposta: str) -> bool:
@@ -59,23 +59,25 @@ def main():
     }
     
     try:
-        # Criar agente Gemini
-        print("\n🤖 Inicializando agente Gemini...")
-        agent = llm_gemini.make_model()
+        # Criar agente LangChain (ReAct + Gemini)
+        print("\n🤖 Inicializando agente LangChain (ReAct + Gemini)...")
+        # O AgentExecutor usará as tools via ReAct conforme o prompt
+        agent = agent_langchain.make_agent(tool_router)
         
         # Prompt do usuário
         prompt_usuario = f"Quero um plano de carreira para a área: {area}, focado em: {tecnologia}."
         
-        # Executar turno completo
-        resposta = agent.run_turn(prompt_usuario, tool_router)
+        # Executar turno completo com ReAct
+        result = agent.invoke({"input": prompt_usuario})
+        resposta = result.get("output", "")
         
         # Validar formato
         if not validar_formato_resposta(resposta):
             print("\n⚠️  Resposta não está no formato ideal, solicitando reformatação...")
-            resposta = agent.run_turn(
-                "Reformule a resposta final em exatamente 5 itens objetivos, cada um citando explicitamente 'fonte: ...'",
-                tool_router
-            )
+            result = agent.invoke({
+                "input": f"Reformule a resposta final em exatamente 5 itens objetivos, cada um citando explicitamente 'fonte: ...'. Use os dados das ferramentas já chamadas para a área {area} e tecnologia {tecnologia}."
+            })
+            resposta = result.get("output", "")
         
         # Exibir resultado final
         print("\n" + "=" * 70)
